@@ -10,12 +10,11 @@ interface ApiResponse {
 }
 
 export async function PeticionLLM(ask: string): Promise<string> {
+  const url = process.env.API_URL;
   const key = process.env.API_KEY;
 
   const response = await fetch(
-    `http://127.0.0.1:5000/what?key=${key}&ask=${encodeURIComponent(
-      ask
-    )}`
+    `https://${url}/what?key=${key}&ask=${encodeURIComponent(ask)}`
   );
 
   if (!response.ok) {

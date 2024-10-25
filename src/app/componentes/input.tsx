@@ -1,14 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import useStore from "../code/conversacion";
-import { PeticionLLM } from "../serverAction/PeticionLLM";
+import React, { useState } from "react";
+import { useChat } from "../code/store";
 
 const Input: React.FC = () => {
-  const addMessage = useStore((state) => state.addMessage);
-  const messages = useStore((state) => state.messages);
+  const addMessage = useChat((state) => state.addMessage);
+  const { chats, chatActual } = useChat();
+
+  const chat = chats.find((chat) => chat.id === chatActual);
+
+  const isUser =
+    chat?.messages[chat?.messages.length - 1]?.role === "user";
 
   const [input, setInput] = useState("");
-  const isUser = messages[messages.length - 1].role === "user";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,27 +21,10 @@ const Input: React.FC = () => {
     }
   };
 
-  const configurarPeticion = async () => {
-    let ask = "";
-    messages.forEach((message) => {
-      ask += `${message.role}: ${message.content}\n`;
-    });
-
-    console.log(ask);
-    const res = await PeticionLLM(ask);
-    addMessage({ role: "assistant", content: res });
-  };
-
-  useEffect(() => {
-    if (messages[messages.length - 1].role === "user") {
-      configurarPeticion();
-    }
-  }, [messages]);
-
   return (
-    <div className="w-full flex justify-center fixed bottom-0 left-0">
+    <div className="w-full flex justify-center">
       <form
-        className="w-[90%] max-w-3xl flex p-4"
+        className="w-full p-2 sm:w-[90%] sm:p-4 max-w-3xl flex"
         onSubmit={handleSubmit}>
         <input
           type="text"

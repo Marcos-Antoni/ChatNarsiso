@@ -1,12 +1,18 @@
 import React from "react";
-import useStore from "../code/conversacion";
+import { useChat } from "../code/store";
+import useChatHook from "../hooks/useChatHook";
 
 const Chat: React.FC = () => {
-  const messages = useStore((state) => state.messages);
+  useChatHook();
+  const { chats, chatActual } = useChat();
+
+  const messages = chats.find(
+    (chat) => chat.id === chatActual
+  )?.messages;
 
   return (
     <div className="flex-grow mb-4">
-      {messages.map(
+      {messages?.map(
         (message, index) =>
           message.role !== "system" && (
             <div
