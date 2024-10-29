@@ -1,11 +1,12 @@
 "use client";
 
 import { MessageSquare, Plus, Trash2 } from "lucide-react";
-import { useChat } from "../code/store";
+import { useChat, useSideBar } from "../code/store";
 import { useSideBarHook } from "../hooks/useSideBarHook";
 
 export default function Component() {
   const { chats, chatActual, changeChatActual } = useChat();
+  const { isOpen, toggleSideBar } = useSideBar();
   const {
     addConversation,
     deleteConversation,
@@ -13,8 +14,10 @@ export default function Component() {
   } = useSideBarHook();
 
   return (
-    <div className="w-64 h-screen bg-gray-800 text-gray-200 p-4 hidden sm:flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+    <div
+      className={`w-full h-screen sm:w-[230px] bg-gray-800 text-gray-200 p-4 flex-col sm:relative fixed top-0 left-0 z-10
+      ${isOpen ? "flex" : "hidden"}`}>
+      <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Chats</h1>
         <button
           onClick={addConversation}
@@ -23,11 +26,11 @@ export default function Component() {
           <Plus className="w-4 h-4" />
         </button>
       </div>
-      <div className="flex-grow">
+      <div className="w-full sm:w-[200px] flex-grow">
         {chats.map((chat) => (
           <div
             key={chat.id}
-            className="flex items-center justify-between mb-2">
+            className="w-full flex items-center justify-between mb-2">
             <div
               onClick={() => changeChatActual(chat.id)}
               className={`w-[85%]  flex items-center justify-between p-2 rounded cursor-pointer ${
@@ -35,7 +38,7 @@ export default function Component() {
                   ? "bg-gray-700"
                   : "hover:bg-gray-700"
               }`}>
-              <div className="flex items-center">
+              <div className="flex items-center w-full">
                 <button
                   className="hover:text-green-400"
                   onClick={() => {
@@ -49,9 +52,11 @@ export default function Component() {
                   <MessageSquare className="w-4 h-4 mr-2" />
                 </button>
 
-                <span className="text-sm truncate" title={chat.name}>
+                <span
+                  className="text-sm truncate w-[80%]"
+                  title={chat.name}>
                   {chat.name.length > 15
-                    ? chat.name.slice(0, 15) + "..."
+                    ? chat.name /*.slice(0, 15) + "..."*/
                     : chat.name}
                 </span>
               </div>
@@ -73,7 +78,9 @@ export default function Component() {
           : "Límite de conversaciones alcanzado"}
       </p>
 
-      <button className="mt-4 py-1 w-full border border-gray-300 text-gray-300 bg-transparent hover:bg-gray-100 hover:text-gray-700 rounded">
+      <button
+        onClick={toggleSideBar}
+        className="mt-4 py-1 w-full border border-gray-300 text-gray-300 bg-transparent hover:bg-gray-100 hover:text-gray-700 rounded">
         Cerrar
       </button>
     </div>

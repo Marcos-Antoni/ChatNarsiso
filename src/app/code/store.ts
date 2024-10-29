@@ -1,8 +1,5 @@
-"use client";
-
 import { create } from "zustand";
-import { LimitePreguntas, systemMessage } from "./utils";
-
+import { LimitePreguntas, systemMessage, chatData } from "./utils";
 // Chat -------------------------------------------------------------------------------------------------
 interface Message {
   role: "user" | "assistant" | "system";
@@ -24,24 +21,12 @@ interface ChatState {
   deleteChat: (id: number) => void;
   changeChatName: (id: number, name: string) => void;
   changeChatActual: (id: number) => void;
+  initChats: (chats: ChatObject[], chatActual: number) => void;
 }
 
 const useChat = create<ChatState>((set) => ({
-  chats: [
-    {
-      id: 1,
-      name: "Narciso 1",
-      limitePreguntas: LimitePreguntas(),
-      messages: [
-        {
-          role: "system",
-          content: systemMessage,
-        },
-      ],
-    },
-  ],
-
-  chatActual: 1,
+  chats: chatData.chats,
+  chatActual: chatData.chatActual,
 
   addMessage: (message) =>
     set((state) => {
@@ -98,7 +83,9 @@ const useChat = create<ChatState>((set) => ({
       };
     }),
 
-  changeChatActual: (id) => set((state) => ({ chatActual: id })),
+  changeChatActual: (id) => set((_) => ({ chatActual: id })),
+  initChats: (chats, chatActual) =>
+    set((_) => ({ chats, chatActual })),
 }));
 
 // SideBar -------------------------------------------------------------------------------------------------

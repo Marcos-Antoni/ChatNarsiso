@@ -1,19 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useChat } from "../code/store";
 import { PeticionLLM } from "../serverAction/PeticionLLM";
-import { rudeAssistantPrompt } from "../code/utils";
+import { rudeAssistantPrompt, despedida } from "../code/utils";
 
 const useChatHook = () => {
-  const { chats, chatActual } = useChat();
+  const { chats, chatActual, addMessage, changeChatName } = useChat();
 
   const messages = chats.find(
     (chat) => chat.id === chatActual
   )?.messages;
 
-  const addMessage = useChat((state) => state.addMessage);
-  const changeChatName = useChat((state) => state.changeChatName);
+  const limitePreguntas = chats.find(
+    (chat) => chat.id === chatActual
+  )?.limitePreguntas;
+
+  const isLimitePreguntas = useCallback(() => {
+    const numeroPreguntas =
+      messages?.filter((message) => message.role === "user")
+        ?.length || 0;
+
+    return numeroPreguntas >= (limitePreguntas ?? 0);
+  }, [messages, limitePreguntas]);
 
   const generarPeticion = (prefix = "") => {
     return (
@@ -23,8 +32,15 @@ const useChatHook = () => {
     );
   };
 
-  const configurarPeticion = async () => {
-    const ask = generarPeticion();
+  const responderPregunta = async () => {
+    let ask: string;
+
+    if (isLimitePreguntas()) {
+      ask = generarPeticion();
+    } else {
+      ask = generarPeticion(despedida);
+    }
+
     const res = await PeticionLLM(ask);
     const respuestaLimpia = limpiarRespuesta(res);
 
@@ -56,9 +72,9 @@ const useChatHook = () => {
     if (!messages || messages.length <= 0) return;
 
     if (messages[messages.length - 1]?.role === "user") {
-      configurarPeticion();
+      responderPregunta();
     }
-    if (messages.length === 3) {
+    if (messages.length === 2) {
       changeConversationName();
     }
   }, [messages]);

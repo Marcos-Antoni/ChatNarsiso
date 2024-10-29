@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useChat } from "../code/store";
 
 const Input: React.FC = () => {
@@ -11,10 +11,20 @@ const Input: React.FC = () => {
   const isUser =
     chat?.messages[chat?.messages.length - 1]?.role === "user";
 
+  const limitePreguntas = useCallback(() => {
+    const numeroPreguntas =
+      chat?.messages.filter((message) => message.role === "user")
+        ?.length || 0;
+
+    return numeroPreguntas >= (chat?.limitePreguntas ?? 0);
+  }, [chat]);
+
   const [input, setInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUser || limitePreguntas()) return;
+
     if (input.trim()) {
       addMessage({ role: "user", content: input });
       setInput("");
@@ -34,9 +44,9 @@ const Input: React.FC = () => {
           placeholder="Type your message..."
         />
         <button
-          type={isUser ? "button" : "submit"}
+          type={isUser || limitePreguntas() ? "button" : "submit"}
           className={`px-4 py-2 rounded-r-lg transition duration-300 ${
-            isUser
+            isUser || limitePreguntas()
               ? "bg-gray-500 text-gray-300 cursor-not-allowed"
               : "bg-blue-500 text-white hover:bg-blue-600"
           }`}>
