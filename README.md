@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chat Narciso
 
-## Getting Started
+Chat Narciso es una aplicación de chat interactiva que permite a los usuarios comunicarse con un asistente virtual que simula una personalidad narcisista. Utiliza **Next.js** para la construcción de la interfaz y **Tailwind CSS** para el diseño responsivo y estilizado. La aplicación permite a los usuarios mantener múltiples conversaciones, almacenar chats localmente y personalizar la experiencia de chat.
 
-First, run the development server:
+## Tabla de Contenidos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Introducción](#introducción)
+- [Características](#características)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Contribuciones](#contribuciones)
+- [Recursos Adicionales](#recursos-adicionales)
+
+## Introducción
+
+Este proyecto fue creado para probar la API de mi otro proyecto [Jarvies](https://github.com/Marcos-Antoni/Jarvis), ya que ese proyecto se comunica con mi propio LLM almacenado en [AWS](https://aws.amazon.com/). La idea principal de este proyecto es crear un chat narcisista que responda de forma distinta a la formalidad común de chatGPT y otros modelos.
+
+## Características
+
+- Interfaz de usuario responsiva.
+- Soporte para un máximo de 5 conversaciones.
+- Un límite de preguntas del usuario entre 5 y 10.
+- Almacenamiento local de chats.
+- Personalización de la personalidad del asistente.
+
+## Instalación y Uso
+
+El proyecto está actualmente disponible en [Vercel](https://vercel.com/) en [este link](https://narsiso.vercel.app/).
+
+Para aquellos que quieran instalar el proyecto, sigan estos pasos:
+
+1. Clonen el repositorio:
+   ```bash
+   git clone https://github.com/Marcos-Antoni/ChatNarsiso.git
+   ```
+2. Naveguen al directorio del proyecto:
+   ```bash
+   cd ChatNarsiso
+   ```
+3. Instalen las dependencias:
+   ```bash
+   npm install
+   ```
+4. Ejecuten el proyecto
+
+   ```bash
+       npm run dev
+       # ||
+       yarn dev
+       # ||
+       pnpm dev
+   ```
+
+5. Abren [http://localhost:3000](http://localhost:3000) en su navegador.
+
+## Estructura del Proyecto
+
+El proyecto maneja esta estructura de carpetas:
+
+```
+src/
+└── app/
+   ├── componentes/
+   ├── code/
+   ├── hooks/
+   ├── serverAction
+   ├── layout.tsx
+   └── page.tsx/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **componentes/**: Contiene los componentes reutilizables de la interfaz de usuario.
+- **code/**: Aquí se encuentra la lógica de los chats y las funciones principales de la aplicación.
+- **hooks/**: Hooks personalizados de React que le quitan el trabajo de usar lógica a los componentes.
+- **serverAction/**: Funciones que manejan las acciones de comunicarse a la API del LLM.
+- **layout.tsx**: Archivo que define la estructura general de la aplicación.
+- **page.tsx**: Archivo principal que renderiza la página inicial de la aplicación.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contribuciones
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Si deseas contribuir, por favor sigue estos pasos:
 
-## Learn More
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz un commit (`git commit -m 'Añadir nueva funcionalidad'`).
+4. Envía un pull request.
 
-To learn more about Next.js, take a look at the following resources:
+## Recursos Adicionales
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Documentación de Next.js](https://nextjs.org/docs)
+- [Tutorial de Tailwind CSS](https://tailwindcss.com/docs)
+- [Jarvies](https://github.com/Marcos-Antoni/Jarvis)
