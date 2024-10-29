@@ -3,32 +3,18 @@
 import { useChat } from "../code/store";
 import { PeticionLLM } from "../serverAction/PeticionLLM";
 import { rudeAssistantPrompt } from "../code/utils";
+import useChatUtils from "./useChatUtils";
+import { useEffect } from "react";
 
 export function useSideBarHook() {
-  const { addChat, deleteChat, changeChatName, chats, chatActual } =
-    useChat();
+  const { changeChatName, chats, chatActual } = useChat();
+  const { limpiarRespuesta, generarPeticion } = useChatUtils();
 
-  const addConversation = () => {
-    addChat();
-  };
+  const messages = chats.find(
+    (chat) => chat.id === chatActual
+  )?.messages;
 
-  const deleteConversation = (id: number) => {
-    deleteChat(id);
-  };
-
-  const generarPeticion = (prefix = "", role = "") => {
-    const chat = chats.find((chat) => chat.id === chatActual);
-    if (!chat) return prefix;
-
-    return chat.messages.reduce((ask, message) => {
-      if (message.role !== role) {
-        return ask + `${message.role}: ${message.content}\n`;
-      }
-      return ask;
-    }, prefix);
-  };
-
-  const changeConversationName = async (id: number) => {
+  const changeConversationName = async (id = chatActual) => {
     const ask = generarPeticion(rudeAssistantPrompt);
     changeChatName(id, "cargando...");
 
@@ -38,16 +24,13 @@ export function useSideBarHook() {
     changeChatName(id, respuestaLimpia);
   };
 
-  const limpiarRespuesta = (res: string) => {
-    const regex = /^(user|assistant|system):/i;
-    const splitRegex = /user:|assistant:|system:/i;
-    res = res.replace(regex, "").split(splitRegex)[0].trim();
-    return res;
-  };
+  useEffect(() => {
+    if (messages?.length === 2) {
+      changeConversationName();
+    }
+  }, [messages]);
 
   return {
-    addConversation,
-    deleteConversation,
     changeConversationName,
   };
 }

@@ -1,26 +1,26 @@
 "use client";
 
 import { MessageSquare, Plus, Trash2 } from "lucide-react";
-import { useChat, useSideBar } from "../code/store";
+import { useChat } from "../code/store";
 import { useSideBarHook } from "../hooks/useSideBarHook";
 
-export default function Component() {
-  const { chats, chatActual, changeChatActual } = useChat();
-  const { isOpen, toggleSideBar } = useSideBar();
-  const {
-    addConversation,
-    deleteConversation,
-    changeConversationName,
-  } = useSideBarHook();
+interface ComponentProps {
+  toggleSideBar: () => void;
+}
+
+export default function SideBar({ toggleSideBar }: ComponentProps) {
+  const { chats, chatActual, changeChatActual, deleteChat, addChat } =
+    useChat();
+
+  const { changeConversationName } = useSideBarHook();
 
   return (
     <div
-      className={`w-full h-screen sm:w-[230px] bg-gray-800 text-gray-200 p-4 flex-col sm:relative fixed top-0 left-0 z-10
-      ${isOpen ? "flex" : "hidden"}`}>
+      className={`w-full h-screen sm:w-[230px] bg-gray-800 text-gray-200 p-4 flex-col sm:relative fixed top-0 left-0 z-10 flex`}>
       <div className="w-full flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Chats</h1>
         <button
-          onClick={addConversation}
+          onClick={addChat}
           disabled={chats.length >= 5}
           className="bg-blue-400 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded disabled:opacity-50">
           <Plus className="w-4 h-4" />
@@ -55,16 +55,14 @@ export default function Component() {
                 <span
                   className="text-sm truncate w-[80%]"
                   title={chat.name}>
-                  {chat.name.length > 15
-                    ? chat.name /*.slice(0, 15) + "..."*/
-                    : chat.name}
+                  {chat.name}
                 </span>
               </div>
             </div>
             {chats.length > 1 && (
               <button
                 className="h-full w-[15%] flex items-center justify-center rounded  hover:text-red-400"
-                onClick={() => deleteConversation(chat.id)}>
+                onClick={() => deleteChat(chat.id)}>
                 <Trash2 className="w-4 h-4" />
               </button>
             )}

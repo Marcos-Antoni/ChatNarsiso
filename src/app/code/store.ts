@@ -57,22 +57,10 @@ const useChat = create<ChatState>((set) => ({
     }),
 
   deleteChat: (id) =>
-    set((state) => {
-      const updatedChats = state.chats.filter(
-        (chat) => chat.id !== id
-      );
-
-      const newChatActual = updatedChats.find(
-        (chat) => chat.id === state.chatActual
-      )
-        ? state.chatActual
-        : updatedChats[0].id;
-
-      return {
-        chats: updatedChats,
-        chatActual: newChatActual,
-      };
-    }),
+    set(({ chats, chatActual }) => ({
+      chats: chats.filter((chat) => chat.id !== id),
+      chatActual: id === chatActual ? chats[0]?.id : chatActual,
+    })),
 
   changeChatName: (id, name) =>
     set((state) => {
@@ -83,21 +71,10 @@ const useChat = create<ChatState>((set) => ({
       };
     }),
 
-  changeChatActual: (id) => set((_) => ({ chatActual: id })),
+  changeChatActual: (id) => set(() => ({ chatActual: id })),
   initChats: (chats, chatActual) =>
-    set((_) => ({ chats, chatActual })),
-}));
-
-// SideBar -------------------------------------------------------------------------------------------------
-interface SideBarState {
-  isOpen: boolean;
-  toggleSideBar: () => void;
-}
-
-const useSideBar = create<SideBarState>((set) => ({
-  isOpen: true,
-  toggleSideBar: () => set((state) => ({ isOpen: !state.isOpen })),
+    set(() => ({ chats, chatActual })),
 }));
 
 // Export -------------------------------------------------------------------------------------------------
-export { useChat, useSideBar };
+export { useChat };
