@@ -6,8 +6,7 @@ Chat Narciso es una aplicación de chat interactiva que permite a los usuarios c
 
 - [Introducción](#introducción)
 - [Características](#características)
-- [Instalación](#instalación)
-- [Uso](#uso)
+- [Instalación y Uso](#instalación-y-uso)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Contribuciones](#contribuciones)
 - [Recursos Adicionales](#recursos-adicionales)

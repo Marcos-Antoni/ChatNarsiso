@@ -7,7 +7,10 @@ const usePageHook = () => {
 
   const { chats, chatActual } = useChat();
   const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
+
+  const [isOpen, setIsOpen] = useState(
+    window.innerWidth > 640 ? true : false
+  );
 
   const toggleSideBar = () => {
     setIsOpen(!isOpen);
