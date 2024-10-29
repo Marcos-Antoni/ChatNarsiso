@@ -16,7 +16,7 @@ const useChatHook = () => {
   )?.messages;
 
   const responderPregunta = async () => {
-    let ask = isLimitePreguntas(chatActual)
+    const ask = isLimitePreguntas(chatActual)
       ? generarPeticion(despedida)
       : generarPeticion();
 
