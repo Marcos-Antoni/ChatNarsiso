@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useChat } from "../code/store";
 import { guardarChats, sacarChats } from "../code/utils";
@@ -8,9 +10,7 @@ const usePageHook = () => {
   const { chats, chatActual } = useChat();
   const [loading, setLoading] = useState(true);
 
-  const [isOpen, setIsOpen] = useState(
-    window.innerWidth > 640 ? true : false
-  );
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSideBar = () => {
     setIsOpen(!isOpen);
@@ -28,6 +28,14 @@ const usePageHook = () => {
 
     guardarChats({ chats, chatActual });
   }, [chats, chatActual]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth > 640 ? !isOpen : isOpen);
+    };
+
+    handleResize();
+  }, []);
 
   return {
     isOpen,
