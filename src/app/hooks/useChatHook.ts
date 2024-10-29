@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useChat } from "../code/store";
 import { PeticionLLM } from "../serverAction/PeticionLLM";
-import { rudeAssistantPrompt, despedida } from "../code/utils";
+import { despedida } from "../code/utils";
 import useChatUtils from "./useChatUtils";
 
 const useChatHook = () => {
