@@ -27,6 +27,13 @@ Este proyecto fue creado para probar la API de mi otro proyecto [Jarvies](https:
 
 El proyecto está actualmente disponible en [Vercel](https://vercel.com/) en [este link](https://narsiso.vercel.app/).
 
+**_Nota importante:_** Este proyecto contiene 2 variables de entorno:
+
+```.env
+API_KEY=la clave de acceso a mi modelo
+API_URL=La URL de mi API
+```
+
 Para aquellos que quieran instalar el proyecto, sigan estos pasos:
 
 1. Clonen el repositorio:
